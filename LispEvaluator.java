@@ -14,6 +14,7 @@ import java.io.*;
  */
 public class LispEvaluator {
 	
+	private LispMath lispMathEvaluations = new LispMath();
 	private static LinkedList<Double> doubleStack;
 	private static int capacity;
 	private static String value;
@@ -72,10 +73,11 @@ public class LispEvaluator {
 	 */
 	public static void handleOperands(LinkedList<String> stack) {
 		value = stack.pop();
+		LispMath mathTime = new LispMath();
 		if(value.equals("(")) {
 			while(!(value.equals(")"))) {
 				if(value.equals("+")){
-					LispEvaluator.add(stack);
+					mathTime.add(stack, value, doubleStack);
 				}
 				else if(value.equals(" ") || value.equals("(")){
 					if(stack.isEmpty()){
@@ -112,7 +114,7 @@ public class LispEvaluator {
 	 * 
 	 * @param stack The link-list string stack that holds the Lisp values
 	 */
-	public static void add(LinkedList<String> stack) {
+/**	public static void add(LinkedList<String> stack) {
 		double accumulator = 0;
 		while(!(value.equals(")"))) {
 			if(value.equals("+")) {
@@ -167,7 +169,7 @@ public class LispEvaluator {
 		}
 		
 	}
-	
+	*/
 	public static void sub(LinkedList<String> stack) {
 		double accumulator = 0;
 		while (!(value.equals(")"))) {

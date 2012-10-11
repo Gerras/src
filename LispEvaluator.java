@@ -14,10 +14,10 @@ import java.io.*;
  */
 public class LispEvaluator {
 	
-	private LispMath lispMathEvaluations = new LispMath();
 	private static LinkedList<Double> doubleStack;
 	private static int capacity;
 	private static String value;
+	
 	/**
 	 * Main function; run program from here
 	 * 

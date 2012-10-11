@@ -22,7 +22,6 @@ public class LispMath {
 				} else {
 					value = stack.pop();	
 				}
-				
 			}
 			else if(value.equals(" ")) {
 				if(stack.isEmpty()) {
@@ -30,7 +29,6 @@ public class LispMath {
 				} else {
 					value = stack.pop();	
 				}
-				
 			}
 			else if(value.equals("(")) {
 				LispEvaluator.handleOperands(stack);
@@ -63,7 +61,6 @@ public class LispMath {
 			} else {
 				throw new InvalidExpressionException();
 			}
-			
 		}
 		return value;
 	}
@@ -83,7 +80,7 @@ public class LispMath {
 		while (!(value.equals(")"))) {
 			if(value.equals("-")) {
 				doubleStack.push(accumulator);
-				value = stack.pop();
+				value = checkBoundaries(stack);
 			}
 			else if(value.equals(" ")) {
 				value = stack.pop();
@@ -122,7 +119,11 @@ public class LispMath {
 		while(!(value.equals(")"))) {
 			if(value.equals("*")) {
 				doubleStack.push(accumulator);
-				value = stack.pop();
+				if(stack.isEmpty()){
+					throw new InvalidExpressionException();
+				} else {
+					value = stack.pop();	
+				}
 			}
 			else if(value.equals(" ")) {
 				value = stack.pop();
@@ -159,7 +160,11 @@ public class LispMath {
 	public String divide(LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
 		while(!(value.equals(")"))) {
-			if(value.equals("/") || value.equals(" ")) {
+			if(value.equals("/")) {
+				doubleStack.push(accumulator);
+				value = checkBoundaries(stack);
+			}
+			else if(value.equals(" ")) {
 				value = stack.pop();
 			}
 			else if (value.equals("(")) {
@@ -175,8 +180,6 @@ public class LispMath {
 					} else {
 						value = stack.pop();
 					}
-						
-						
 				} else {
 					accumulator /= Double.parseDouble(value);
 					doubleStack.push(accumulator);
@@ -191,5 +194,18 @@ public class LispMath {
 			}
 		}
 		return value;
+	}
+	
+	public String checkBoundaries(LinkedList<String> stack){
+		String stackTop = stack.top();
+		if(stack.isEmpty()){
+			throw new InvalidExpressionException();
+		} 
+		else if(stackTop.equals(")")){
+			throw new InvalidExpressionException();
+		}else {
+			String value = stack.pop();
+			return value;
+		}
 	}
 }

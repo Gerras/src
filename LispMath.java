@@ -14,6 +14,7 @@ public class LispMath {
 	 */
 	public String add (LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
+		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(value.equals(")"))) {
 			if(value.equals("+")) {
 				doubleStack.push(accumulator);
@@ -31,7 +32,7 @@ public class LispMath {
 				}
 			}
 			else if(value.equals("(")) {
-				LispEvaluator.handleOperands(stack);
+				lispEvaluator.handleOperands(stack);
 			}
 			else if (value.equals("-")) {
 				throw new InvalidExpressionException();
@@ -77,6 +78,7 @@ public class LispMath {
 	 */
 	public String sub (LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
+		LispEvaluator lispEvaluator = new LispEvaluator();
 		while (!(value.equals(")"))) {
 			if(value.equals("-")) {
 				doubleStack.push(accumulator);
@@ -86,7 +88,7 @@ public class LispMath {
 				value = stack.pop();
 			}
 			else if (value.equals("(")) {
-				LispEvaluator.handleOperands(stack);
+				lispEvaluator.handleOperands(stack);
 			}
 			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
 				if(!(doubleStack.isEmpty())) {
@@ -116,6 +118,7 @@ public class LispMath {
 
 	public String multiply(LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
+		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(value.equals(")"))) {
 			if(value.equals("*")) {
 				doubleStack.push(accumulator);
@@ -129,7 +132,7 @@ public class LispMath {
 				value = stack.pop();
 			}
 			else if(value.equals("(")) {
-				LispEvaluator.handleOperands(stack);
+				lispEvaluator.handleOperands(stack);
 			}
 			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
 				if(!(doubleStack.isEmpty())) {
@@ -159,6 +162,7 @@ public class LispMath {
 
 	public String divide(LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
+		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(value.equals(")"))) {
 			if(value.equals("/")) {
 				doubleStack.push(accumulator);
@@ -168,7 +172,7 @@ public class LispMath {
 				value = stack.pop();
 			}
 			else if (value.equals("(")) {
-				LispEvaluator.handleOperands(stack);
+				lispEvaluator.handleOperands(stack);
 			}
 			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
 				if(!(doubleStack.isEmpty())) {

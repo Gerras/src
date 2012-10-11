@@ -1,6 +1,3 @@
-
-import java.io.*;
-
 /**
  * This program evaluates Lisp expressions using an algorithm
  * that I devised. It takes in a file with one Lisp expression
@@ -23,6 +20,7 @@ public class LispEvaluator {
 	 * 
 	 * @param args
 	 */
+	/**
 	public static void main(String[] args) throws IOException {
 		String myFile = args[0];
 		BufferedReader stringInput = new BufferedReader(new FileReader(myFile));
@@ -40,7 +38,7 @@ public class LispEvaluator {
 		stringInput.close();
 		
 		
-	}
+	} */
 	/**
 	 * This function evaluates the given Lisp Expression and returns a
 	 * double value for it.
@@ -48,7 +46,7 @@ public class LispEvaluator {
 	 * @param 	expression	The string lisp expression
 	 * @return	double		The double value of the evaluated string
 	 */
-	public static double evaluate(String expression) throws InvalidExpressionException {
+	public double evaluate(String expression) throws InvalidExpressionException {
 		int stringLength = expression.length();
 		doubleStack = new LinkedList<Double>(stringLength);
 		LinkedList<String> stack = new LinkedList<String>(stringLength);
@@ -57,7 +55,7 @@ public class LispEvaluator {
 			stack.push(sarray[i]);
 		}
 		
-		LispEvaluator.handleOperands(stack);
+		handleOperands(stack);
 		if(doubleStack.isEmpty()) {
 			throw new InvalidExpressionException();
 		} else {
@@ -72,7 +70,7 @@ public class LispEvaluator {
 	 * @param sarray The string array that is parsed
 	 * @param list The stack 
 	 */
-	public static void handleOperands(LinkedList<String> stack) {
+	public void handleOperands(LinkedList<String> stack) {
 		value = stack.pop();
 		LispMath mathTime = new LispMath();
 		if(value.equals("(")) {

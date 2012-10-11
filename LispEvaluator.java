@@ -77,7 +77,7 @@ public class LispEvaluator {
 		if(value.equals("(")) {
 			while(!(value.equals(")"))) {
 				if(value.equals("+")){
-					mathTime.add(stack, value, doubleStack);
+					value = mathTime.add(stack, value, doubleStack);
 				}
 				else if(value.equals(" ") || value.equals("(")){
 					if(stack.isEmpty()){
@@ -85,11 +85,10 @@ public class LispEvaluator {
 					} else {
 						value = stack.pop();	
 					}
-					
 				}
-				
 				else if (value.equals("-")) {
-					LispEvaluator.sub(stack);
+					value = mathTime.sub(stack, value, doubleStack);
+					//LispEvaluator.sub(stack);
 				}
 				else if (value.equals("/")) {
 					LispEvaluator.div(stack);
@@ -102,74 +101,11 @@ public class LispEvaluator {
 				}
 			}		
 		}
-		else
+		else {
 			throw new InvalidExpressionException();
-	}
-	
-	/**
-	 * This function adds Lisp values together. I use a static running 
-	 * accumulator for all of my functions, because I wasn't sure how to
-	 * do it any other way when pushing the whole string onto the stack
-	 * at the very beginning of evaluate.
-	 * 
-	 * @param stack The link-list string stack that holds the Lisp values
-	 */
-/**	public static void add(LinkedList<String> stack) {
-		double accumulator = 0;
-		while(!(value.equals(")"))) {
-			if(value.equals("+")) {
-				doubleStack.push(accumulator);
-				if(stack.isEmpty()){
-					throw new InvalidExpressionException();
-				} else {
-					value = stack.pop();	
-				}
-				
-			}
-			else if(value.equals(" ")) {
-				if(stack.isEmpty()) {
-					throw new InvalidExpressionException();
-				} else {
-					value = stack.pop();	
-				}
-				
-			}
-			else if(value.equals("(")) {
-				LispEvaluator.handleOperands(stack);
-			}
-			else if (value.equals("-")) {
-				throw new InvalidExpressionException();
-			}
-			else if (value.equals("a")) {
-				throw new InvalidExpressionException();
-			}
-			else if(Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0 ) {
-				if(!(doubleStack.isEmpty())) {
-					accumulator = doubleStack.pop();
-					accumulator += Double.parseDouble(value);
-					doubleStack.push(accumulator);
-					if(stack.isEmpty()) {
-						throw new InvalidExpressionException();
-					} else {
-						value = stack.pop();
-					}	
-				} else {
-					accumulator += Double.parseDouble(value);
-					doubleStack.push(accumulator);
-					if(stack.isEmpty()) {
-						throw new InvalidExpressionException();
-					} else {
-						value = stack.pop();
-					}
-				}
-			} else {
-				throw new InvalidExpressionException();
-			}
-			
 		}
-		
 	}
-	*/
+
 	public static void sub(LinkedList<String> stack) {
 		double accumulator = 0;
 		while (!(value.equals(")"))) {
@@ -207,6 +143,7 @@ public class LispEvaluator {
 			}
 		}
 	}
+	
 	
 	public static void mul(LinkedList<String> stack) {
 		double accumulator = 1;

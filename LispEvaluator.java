@@ -15,7 +15,7 @@ import java.io.*;
 public class LispEvaluator {
 	
 	private static LinkedList<Double> doubleStack;
-	private static int capacity;
+	//private static int capacity;
 	private static String value;
 	
 	/**
@@ -29,7 +29,7 @@ public class LispEvaluator {
 		String myString;
 		while((myString = stringInput.readLine()) != null) {
 			try{
-				capacity = myString.length();
+				//capacity = myString.length();
 				double evalExpression = LispEvaluator.evaluate(myString);
 				System.out.println(evalExpression);	
 			} catch(InvalidExpressionException e) {
@@ -49,10 +49,11 @@ public class LispEvaluator {
 	 * @return	double		The double value of the evaluated string
 	 */
 	public static double evaluate(String expression) throws InvalidExpressionException {
-		doubleStack = new LinkedList<Double>(capacity);
-		LinkedList<String> stack = new LinkedList<String>(capacity);
+		int stringLength = expression.length();
+		doubleStack = new LinkedList<Double>(stringLength);
+		LinkedList<String> stack = new LinkedList<String>(stringLength);
 		String[] sarray = expression.split("");
-		for(int i = capacity; i > 0; i--) {
+		for(int i = stringLength; i > 0; i--) {
 			stack.push(sarray[i]);
 		}
 		

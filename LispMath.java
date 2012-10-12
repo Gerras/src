@@ -40,6 +40,9 @@ public class LispMath {
 			else if (value.equals("a")) {
 				throw new InvalidExpressionException();
 			}
+			else if (value.equals("*") || value.equals("/") || value.equals("-")) {
+				throw new InvalidExpressionException();
+			}
 			else if(Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0 ) {
 				if(!(doubleStack.isEmpty())) {
 					accumulator = doubleStack.pop();
@@ -78,6 +81,7 @@ public class LispMath {
 	 */
 	public String sub (LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
+		double midaccum;
 		LispEvaluator lispEvaluator = new LispEvaluator();
 		while (!(value.equals(")"))) {
 			if(value.equals("-")) {
@@ -90,29 +94,31 @@ public class LispMath {
 			else if (value.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
+			else if (value.equals("*") || value.equals("/") || value.equals("+")) {
+				throw new InvalidExpressionException();
+			}
 			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
-				if(!(doubleStack.isEmpty())) {
-					accumulator = doubleStack.pop();
-					accumulator = accumulator - Double.parseDouble(value);
-					doubleStack.push(accumulator);
-					if(stack.isEmpty()) {
-						throw new InvalidExpressionException();
+				while(!(value.equals(")"))) {
+					if(value.equals(" ")){
+						value = stack.pop();
 					} else {
-						value = stack.pop();	
-					}
-				} else {
-					accumulator = Double.parseDouble(value);
-					doubleStack.push(accumulator);
-					if(stack.isEmpty()) {
-						throw new InvalidExpressionException();
-					} else {
+						doubleStack.push(Double.parseDouble(value));
 						value = stack.pop();
 					}
 				}
+				while(!(doubleStack.isEmpty())) {
+					midaccum = doubleStack.pop();
+					if (doubleStack.isEmpty()) {
+						accumulator = accumulator - midaccum;
+					} else {
+						accumulator = doubleStack.pop() - midaccum ;
+					}
+				} 
 			} else {
 				throw new InvalidExpressionException();
 			}
 		}
+		doubleStack.push(accumulator);
 		return value;
 	}
 
@@ -134,6 +140,9 @@ public class LispMath {
 			else if(value.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
+			else if (value.equals("-") || value.equals("/") || value.equals("+")) {
+				throw new InvalidExpressionException();
+			}
 			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
 				if(!(doubleStack.isEmpty())) {
 					accumulator = doubleStack.pop();
@@ -157,11 +166,13 @@ public class LispMath {
 				throw new InvalidExpressionException();
 			}
 		}
+		
 		return value;
 	}
 
 	public String divide(LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
+		double midaccum;
 		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(value.equals(")"))) {
 			if(value.equals("/")) {
@@ -174,29 +185,31 @@ public class LispMath {
 			else if (value.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
+			else if (value.equals("*") || value.equals("-") || value.equals("+")) {
+				throw new InvalidExpressionException();
+			}
 			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
-				if(!(doubleStack.isEmpty())) {
-					accumulator = doubleStack.pop();
-					accumulator /= Double.parseDouble(value);
-					doubleStack.push(accumulator);
-					if(stack.isEmpty()) {
-						throw new InvalidExpressionException();
+				while(!(value.equals(")"))) {
+					if (value.equals(" ")) {
+						value = stack.pop();
 					} else {
+						doubleStack.push(Double.parseDouble(value));
 						value = stack.pop();
 					}
-				} else {
-					accumulator /= Double.parseDouble(value);
-					doubleStack.push(accumulator);
-					if(stack.isEmpty()) {
-						throw new InvalidExpressionException();
+				}
+				while(!(doubleStack.isEmpty())) {
+					midaccum = doubleStack.pop();
+					if (doubleStack.isEmpty()) {
+						accumulator = accumulator / midaccum;
 					} else {
-						value = stack.pop();
+						accumulator = doubleStack.pop() / midaccum;
 					}
-				} 
+				}
 			} else {
 				throw new InvalidExpressionException();
 			}
 		}
+		doubleStack.push(accumulator);
 		return value;
 	}
 	

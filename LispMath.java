@@ -1,5 +1,5 @@
 
-public class LispMath {
+public class LispMath extends LispEvaluator {
 	
 	
 	/**
@@ -14,7 +14,6 @@ public class LispMath {
 	 */
 	public String add (LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
-		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(currStackValue.equals(")"))) {
 			if(currStackValue.equals("+")) {
 				doubleStack.push(accumulator);
@@ -32,7 +31,7 @@ public class LispMath {
 				}
 			}
 			else if(currStackValue.equals("(")) {
-				lispEvaluator.handleOperands(stack);
+				handleOperands(stack);
 			}
 			else if (currStackValue.equals("-")) {
 				throw new InvalidExpressionException();
@@ -82,7 +81,7 @@ public class LispMath {
 	public String sub (LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
 		double midaccum;
-		LispEvaluator lispEvaluator = new LispEvaluator();
+
 		while (!(currStackValue.equals(")"))) {
 			if(currStackValue.equals("-")) {
 				doubleStack.push(accumulator);
@@ -92,7 +91,7 @@ public class LispMath {
 				currStackValue = stack.pop();
 			}
 			else if (currStackValue.equals("(")) {
-				lispEvaluator.handleOperands(stack);
+				handleOperands(stack);
 			}
 			else if (currStackValue.equals("*") || currStackValue.equals("/") || currStackValue.equals("+")) {
 				throw new InvalidExpressionException();
@@ -124,7 +123,6 @@ public class LispMath {
 
 	public String multiply(LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
-		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(currStackValue.equals(")"))) {
 			if(currStackValue.equals("*")) {
 				doubleStack.push(accumulator);
@@ -138,7 +136,7 @@ public class LispMath {
 				currStackValue = stack.pop();
 			}
 			else if(currStackValue.equals("(")) {
-				lispEvaluator.handleOperands(stack);
+				handleOperands(stack);
 			}
 			else if (currStackValue.equals("-") || currStackValue.equals("/") || currStackValue.equals("+")) {
 				throw new InvalidExpressionException();
@@ -173,7 +171,6 @@ public class LispMath {
 	public String divide(LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
 		double midaccum;
-		LispEvaluator lispEvaluator = new LispEvaluator();
 		while(!(currStackValue.equals(")"))) {
 			if(currStackValue.equals("/")) {
 				doubleStack.push(accumulator);
@@ -183,7 +180,7 @@ public class LispMath {
 				currStackValue = stack.pop();
 			}
 			else if (currStackValue.equals("(")) {
-				lispEvaluator.handleOperands(stack);
+				handleOperands(stack);
 			}
 			else if (currStackValue.equals("*") || currStackValue.equals("-") || currStackValue.equals("+")) {
 				throw new InvalidExpressionException();
@@ -211,18 +208,5 @@ public class LispMath {
 		}
 		doubleStack.push(accumulator);
 		return currStackValue;
-	}
-	
-	public String checkBoundaries(LinkedList<String> stack){
-		String stackTop = stack.top();
-		if(stack.isEmpty()){
-			throw new InvalidExpressionException();
-		} 
-		else if(stackTop.equals(")")){
-			throw new InvalidExpressionException();
-		}else {
-			String currStackValue = stack.pop();
-			return currStackValue;
-		}
 	}
 }

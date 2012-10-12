@@ -103,5 +103,18 @@ public class LispEvaluator {
 			throw new InvalidExpressionException();
 		}
 	}
+	
+	public String checkBoundaries(LinkedList<String> stack){
+		String stackTop = stack.top();
+		if(stack.isEmpty()){
+			throw new InvalidExpressionException();
+		} 
+		else if(stackTop.equals(")")){
+			throw new InvalidExpressionException();
+		}else {
+			String currStackValue = stack.pop();
+			return currStackValue;
+		}
+	}
 }
 

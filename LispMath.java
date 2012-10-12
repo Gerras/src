@@ -3,107 +3,107 @@ public class LispMath {
 	
 	
 	/**
-	 * This function adds Lisp values together. I use a static running 
+	 * This function adds Lisp currStackValues together. I use a static running 
 	 * accumulator for all of my functions, because I wasn't sure how to
 	 * do it any other way when pushing the whole string onto the stack
 	 * at the very beginning of evaluate.
 	 * 
-	 * @param stack The link-list string stack that holds the Lisp values
-	 * @param value The value of that is currently being looked at
+	 * @param stack The link-list string stack that holds the Lisp currStackValues
+	 * @param currStackValue The currStackValue of that is currently being looked at
 	 * @param doubleStack The link-list double stack that holds the accumulator
 	 */
-	public String add (LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
+	public String add (LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
 		LispEvaluator lispEvaluator = new LispEvaluator();
-		while(!(value.equals(")"))) {
-			if(value.equals("+")) {
+		while(!(currStackValue.equals(")"))) {
+			if(currStackValue.equals("+")) {
 				doubleStack.push(accumulator);
 				if(stack.isEmpty()){
 					throw new InvalidExpressionException();
 				} else {
-					value = stack.pop();	
+					currStackValue = stack.pop();	
 				}
 			}
-			else if(value.equals(" ")) {
+			else if(currStackValue.equals(" ")) {
 				if(stack.isEmpty()) {
 					throw new InvalidExpressionException();
 				} else {
-					value = stack.pop();	
+					currStackValue = stack.pop();	
 				}
 			}
-			else if(value.equals("(")) {
+			else if(currStackValue.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
-			else if (value.equals("-")) {
+			else if (currStackValue.equals("-")) {
 				throw new InvalidExpressionException();
 			}
-			else if (value.equals("a")) {
+			else if (currStackValue.equals("a")) {
 				throw new InvalidExpressionException();
 			}
-			else if (value.equals("*") || value.equals("/") || value.equals("-")) {
+			else if (currStackValue.equals("*") || currStackValue.equals("/") || currStackValue.equals("-")) {
 				throw new InvalidExpressionException();
 			}
-			else if(Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0 ) {
+			else if(Integer.parseInt(currStackValue) <= 9 && Integer.parseInt(currStackValue) >= 0 ) {
 				if(!(doubleStack.isEmpty())) {
 					accumulator = doubleStack.pop();
-					accumulator += Double.parseDouble(value);
+					accumulator += Double.parseDouble(currStackValue);
 					doubleStack.push(accumulator);
 					if(stack.isEmpty()) {
 						throw new InvalidExpressionException();
 					} else {
-						value = stack.pop();
+						currStackValue = stack.pop();
 					}	
 				} else {
-					accumulator += Double.parseDouble(value);
+					accumulator += Double.parseDouble(currStackValue);
 					doubleStack.push(accumulator);
 					if(stack.isEmpty()) {
 						throw new InvalidExpressionException();
 					} else {
-						value = stack.pop();
+						currStackValue = stack.pop();
 					}
 				}
 			} else {
 				throw new InvalidExpressionException();
 			}
 		}
-		return value;
+		return currStackValue;
 	}
 	
 	/**
-	 * This function subtracts Lisp values.  I use a static running 
+	 * This function subtracts Lisp currStackValues.  I use a static running 
 	 * accumulator for all of my functions, because I wasn't sure how to
 	 * do it any other way when pushing the whole string onto the stack
 	 * at the very beginning of evaluate.
 	 * 
-	 * @param stack The link-list string stack that holds the Lisp values
-	 * @param value The value of that is currently being looked at
+	 * @param stack The link-list string stack that holds the Lisp currStackValues
+	 * @param currStackValue The currStackValue of that is currently being looked at
 	 * @param doubleStack The link-list double stack that holds the accumulator
 	 */
-	public String sub (LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
+	public String sub (LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 0;
 		double midaccum;
 		LispEvaluator lispEvaluator = new LispEvaluator();
-		while (!(value.equals(")"))) {
-			if(value.equals("-")) {
+		while (!(currStackValue.equals(")"))) {
+			if(currStackValue.equals("-")) {
 				doubleStack.push(accumulator);
-				value = checkBoundaries(stack);
+				currStackValue = checkBoundaries(stack);
 			}
-			else if(value.equals(" ")) {
-				value = stack.pop();
+			else if(currStackValue.equals(" ")) {
+				currStackValue = stack.pop();
 			}
-			else if (value.equals("(")) {
+			else if (currStackValue.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
-			else if (value.equals("*") || value.equals("/") || value.equals("+")) {
+			else if (currStackValue.equals("*") || currStackValue.equals("/") || currStackValue.equals("+")) {
 				throw new InvalidExpressionException();
 			}
-			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
-				while(!(value.equals(")"))) {
-					if(value.equals(" ")){
-						value = stack.pop();
+			else if (Integer.parseInt(currStackValue) <= 9 && Integer.parseInt(currStackValue) >= 0) {
+				while(!(currStackValue.equals(")"))) {
+					if(currStackValue.equals(" ")){
+						currStackValue = stack.pop();
 					} else {
-						doubleStack.push(Double.parseDouble(value));
-						value = stack.pop();
+						doubleStack.push(Double.parseDouble(currStackValue));
+						currStackValue = stack.pop();
 					}
 				}
 				while(!(doubleStack.isEmpty())) {
@@ -119,47 +119,47 @@ public class LispMath {
 			}
 		}
 		doubleStack.push(accumulator);
-		return value;
+		return currStackValue;
 	}
 
-	public String multiply(LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
+	public String multiply(LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
 		LispEvaluator lispEvaluator = new LispEvaluator();
-		while(!(value.equals(")"))) {
-			if(value.equals("*")) {
+		while(!(currStackValue.equals(")"))) {
+			if(currStackValue.equals("*")) {
 				doubleStack.push(accumulator);
 				if(stack.isEmpty()){
 					throw new InvalidExpressionException();
 				} else {
-					value = stack.pop();	
+					currStackValue = stack.pop();	
 				}
 			}
-			else if(value.equals(" ")) {
-				value = stack.pop();
+			else if(currStackValue.equals(" ")) {
+				currStackValue = stack.pop();
 			}
-			else if(value.equals("(")) {
+			else if(currStackValue.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
-			else if (value.equals("-") || value.equals("/") || value.equals("+")) {
+			else if (currStackValue.equals("-") || currStackValue.equals("/") || currStackValue.equals("+")) {
 				throw new InvalidExpressionException();
 			}
-			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
+			else if (Integer.parseInt(currStackValue) <= 9 && Integer.parseInt(currStackValue) >= 0) {
 				if(!(doubleStack.isEmpty())) {
 					accumulator = doubleStack.pop();
-					accumulator *= Double.parseDouble(value);
+					accumulator *= Double.parseDouble(currStackValue);
 					doubleStack.push(accumulator);
 					if(stack.isEmpty()) {
 						throw new InvalidExpressionException();
 					} else {
-						value = stack.pop();
+						currStackValue = stack.pop();
 					}
 				} else {
-					accumulator *= Double.parseDouble(value);
+					accumulator *= Double.parseDouble(currStackValue);
 					doubleStack.push(accumulator);
 					if(stack.isEmpty()) {
 						throw new InvalidExpressionException();
 					} else {
-						value = stack.pop();
+						currStackValue = stack.pop();
 					}
 				}
 			} else {
@@ -167,34 +167,34 @@ public class LispMath {
 			}
 		}
 		
-		return value;
+		return currStackValue;
 	}
 
-	public String divide(LinkedList<String> stack, String value, LinkedList<Double> doubleStack) {
+	public String divide(LinkedList<String> stack, String currStackValue, LinkedList<Double> doubleStack) {
 		double accumulator = 1;
 		double midaccum;
 		LispEvaluator lispEvaluator = new LispEvaluator();
-		while(!(value.equals(")"))) {
-			if(value.equals("/")) {
+		while(!(currStackValue.equals(")"))) {
+			if(currStackValue.equals("/")) {
 				doubleStack.push(accumulator);
-				value = checkBoundaries(stack);
+				currStackValue = checkBoundaries(stack);
 			}
-			else if(value.equals(" ")) {
-				value = stack.pop();
+			else if(currStackValue.equals(" ")) {
+				currStackValue = stack.pop();
 			}
-			else if (value.equals("(")) {
+			else if (currStackValue.equals("(")) {
 				lispEvaluator.handleOperands(stack);
 			}
-			else if (value.equals("*") || value.equals("-") || value.equals("+")) {
+			else if (currStackValue.equals("*") || currStackValue.equals("-") || currStackValue.equals("+")) {
 				throw new InvalidExpressionException();
 			}
-			else if (Integer.parseInt(value) <= 9 && Integer.parseInt(value) >= 0) {
-				while(!(value.equals(")"))) {
-					if (value.equals(" ")) {
-						value = stack.pop();
+			else if (Integer.parseInt(currStackValue) <= 9 && Integer.parseInt(currStackValue) >= 0) {
+				while(!(currStackValue.equals(")"))) {
+					if (currStackValue.equals(" ")) {
+						currStackValue = stack.pop();
 					} else {
-						doubleStack.push(Double.parseDouble(value));
-						value = stack.pop();
+						doubleStack.push(Double.parseDouble(currStackValue));
+						currStackValue = stack.pop();
 					}
 				}
 				while(!(doubleStack.isEmpty())) {
@@ -210,7 +210,7 @@ public class LispMath {
 			}
 		}
 		doubleStack.push(accumulator);
-		return value;
+		return currStackValue;
 	}
 	
 	public String checkBoundaries(LinkedList<String> stack){
@@ -221,8 +221,8 @@ public class LispMath {
 		else if(stackTop.equals(")")){
 			throw new InvalidExpressionException();
 		}else {
-			String value = stack.pop();
-			return value;
+			String currStackValue = stack.pop();
+			return currStackValue;
 		}
 	}
 }

@@ -1,8 +1,8 @@
 /**
  * This program evaluates Lisp expressions using an algorithm
  * that I devised. It takes in a file with one Lisp expression
- * per line and prints every value obtained to standard output.
- * The outputs will be of a double value.
+ * per line and prints every currStackValue obtained to standard output.
+ * The outputs will be of a double currStackValue.
  * This class contains the executable portion of my program.
  *  
  * 
@@ -13,7 +13,7 @@ public class LispEvaluator {
 	
 	private static LinkedList<Double> doubleStack;
 	//private static int capacity;
-	private static String value;
+	private static String currStackValue;
 	
 	/**
 	 * Main function; run program from here
@@ -41,10 +41,10 @@ public class LispEvaluator {
 	} */
 	/**
 	 * This function evaluates the given Lisp Expression and returns a
-	 * double value for it.
+	 * double currStackValue for it.
 	 * 
 	 * @param 	expression	The string lisp expression
-	 * @return	double		The double value of the evaluated string
+	 * @return	double		The double currStackValue of the evaluated string
 	 */
 	public double evaluate(String expression) throws InvalidExpressionException {
 		int stringLength = expression.length();
@@ -59,8 +59,8 @@ public class LispEvaluator {
 		if(doubleStack.isEmpty()) {
 			throw new InvalidExpressionException();
 		} else {
-			double lispValue = doubleStack.pop();
-			return lispValue;						
+			double lispcurrStackValue = doubleStack.pop();
+			return lispcurrStackValue;						
 		}
 
 	}
@@ -71,28 +71,28 @@ public class LispEvaluator {
 	 * @param list The stack 
 	 */
 	public void handleOperands(LinkedList<String> stack) {
-		value = stack.pop();
+		currStackValue = stack.pop();
 		LispMath mathTime = new LispMath();
-		if(value.equals("(")) {
-			while(!(value.equals(")"))) {
-				if(value.equals("+")){
-					value = mathTime.add(stack, value, doubleStack);
+		if(currStackValue.equals("(")) {
+			while(!(currStackValue.equals(")"))) {
+				if(currStackValue.equals("+")){
+					currStackValue = mathTime.add(stack, currStackValue, doubleStack);
 				}
-				else if(value.equals(" ") || value.equals("(")){
+				else if(currStackValue.equals(" ") || currStackValue.equals("(")){
 					if(stack.isEmpty()){
 						throw new InvalidExpressionException();
 					} else {
-						value = stack.pop();	
+						currStackValue = stack.pop();	
 					}
 				}
-				else if (value.equals("-")) {
-					value = mathTime.sub(stack, value, doubleStack);
+				else if (currStackValue.equals("-")) {
+					currStackValue = mathTime.sub(stack, currStackValue, doubleStack);
 				}
-				else if (value.equals("/")) {
-					value = mathTime.divide(stack, value, doubleStack);
+				else if (currStackValue.equals("/")) {
+					currStackValue = mathTime.divide(stack, currStackValue, doubleStack);
 				}
-				else if (value.equals("*")) {
-					value = mathTime.multiply(stack, value, doubleStack);
+				else if (currStackValue.equals("*")) {
+					currStackValue = mathTime.multiply(stack, currStackValue, doubleStack);
 				}
 				else {
 					throw new InvalidExpressionException();
